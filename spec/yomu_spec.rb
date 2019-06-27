@@ -3,6 +3,7 @@ require 'yomu'
 
 describe Yomu do
   let(:data) { File.read 'spec/samples/sample.docx' }
+  let(:pdf_data ) { File.read 'spec/samples/sample-ass-mgr.pdf' }
 
   before do
     ENV['JAVA_HOME'] = nil
@@ -13,6 +14,12 @@ describe Yomu do
       text = Yomu.read :text, data
 
       expect( text ).to include 'The quick brown fox jumped over the lazy cat.'
+    end
+
+    it "reads embedded text" do
+      text = Yomu.read :text, pdf_data
+
+      expect( text ).to include 'The role of the Assistant Manager is to support the store'
     end
 
     it 'reads metadata' do
