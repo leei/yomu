@@ -9,7 +9,8 @@ require 'stringio'
 
 class Yomu
   GEMPATH = File.dirname(File.dirname(__FILE__))
-  JARPATH = File.join(Yomu::GEMPATH, 'jar', 'tika-app-1.21t.jar')
+  JARPATH = File.join(Yomu::GEMPATH, 'jar', 'tika-app-1.21.jar')
+  OCRPATH = File.join(Yomu::GEMPATH, 'jar', 'ocr.xml')
   DEFAULT_SERVER_PORT = 9293 # an arbitrary, but perfectly cromulent, port
 
   @@server_port = nil
@@ -25,7 +26,7 @@ class Yomu
     result = @@server_pid ? self._server_read(type, data) : self._client_read(type, data)
 
     case type
-    when :text
+    when :text, :text_ocr
       result
     when :html
       result
@@ -40,6 +41,8 @@ class Yomu
     switch = case type
     when :text
       '-t'
+    when :text_ocr
+      "--config=#{OCRPATH}  -t"
     when :html
       '-h'
     when :metadata
@@ -117,6 +120,17 @@ class Yomu
     return @text if defined? @text
 
     @text = Yomu.read :text, data
+  end
+
+  # Returns the text content of the Yomu document.
+  #
+  #   yomu = Yomu.new 'sample.pages'
+  #   yomu.text
+
+  def text_ocr
+    return @text_ocr if defined? @text_ocr
+
+    @text_ocr = Yomu.read :text_ocr, data
   end
 
   # Returns the text content of the Yomu document in HTML.

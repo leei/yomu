@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<properties>
+  <parsers>
+    <parser class="org.apache.tika.parser.pdf.PDFParser">
+      <params>
+        <param name="extractInlineImages" type="bool">true</param>
+        <param name="ocrStrategy" type="string">ocr_and_text</param>
+        <param name="ocrImageType" type="string">rgb</param>
+        <param name="ocrDPI" type="int">100</param>
+      </params>
+    </parser>
+  </parsers>
+</properties>
+
